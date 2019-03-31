@@ -4,20 +4,25 @@ Program can produce image with color hole (by default black color 0xff000000) an
 
 ### Hole creation example
 
-####Parameters:
+#### Parameters:
 
    - Color: default (0xff000000)
    - Size: default (1/6 of full image size)
+   - Postion: random
 
 #### Input
 
+![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/example.jpg)
+
 #### Output
+
+![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/black-hole-example.jpg)
 
 ### Statistical characteristic
 
 At the moment, only calculation of MSE is available
 
-IMAGE
+![]()
 
 ```
 I - the first image 
