@@ -8,7 +8,7 @@ Program can produce image with color hole (by default black color 0xff000000) an
 
    - Color: default (0xff000000)
    - Size: default (1/6 of full image size)
-   - Postion: random
+   - Position: random
 
 #### Input
 
