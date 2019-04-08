@@ -6,9 +6,9 @@ Program can produce image with color hole (by default black color 0xff000000) an
 
 #### Parameters:
 
-   - Color: default (0xff000000)
-   - Size: default (1/6 of full image size)
-   - Postion: random
+   - **Color:** default (0xff000000)
+   - **Size:** default (1/6 of full image size)
+   - **Position:** random
 
 #### Input
 
@@ -22,7 +22,7 @@ Program can produce image with color hole (by default black color 0xff000000) an
 
 At the moment, only calculation of MSE is available
 
-![]()
+![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/mse.PNG)
 
 ```
 I - the first image 
