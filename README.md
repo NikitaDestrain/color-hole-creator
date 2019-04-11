@@ -1,13 +1,13 @@
 # Color-hole-creator
 
-Program can produce image with color hole (by default black color 0xff000000) and calculate statistical characteristics
+Program can produce image with color hole and calculate statistical characteristics
 
 ### Hole creation example
 
 #### Parameters:
 
-   - **Color:** default (0xff000000)
-   - **Size:** default (1/6 of full image size)
+   - **Color:** 0xff000000
+   - **Size:** 1/6 of full image size
    - **Position:** random
 
 #### Input
@@ -17,6 +17,40 @@ Program can produce image with color hole (by default black color 0xff000000) an
 #### Output
 
 ![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/black-hole-example.jpg)
+
+### Configuration
+
+Go to **img/${your dataset name}** and create **descriptor** file and **flist** file. See example: **img/dataset_example**.
+
+Then you should go to **properties/** and choose **configuration.properties** file and paste to it needed parameters
+
+## Default configuration.properties
+
+```
+## run configuration
+# path in img folder (should contain descriptor and flist. See: dataset_example)
+path = dataset_example
+amount = 3
+output_postfix = hole
+
+## hole form
+# rectangle / ellipse
+form = rectangle
+
+## hole sizes
+# min hole height
+min_height = 15
+# max hole height
+max_height = 50
+# min hole width
+min_width = 15
+# max hole width
+max_width = 50
+
+## hole color
+# red / green / blue / white / black
+color = green
+```
 
 ### Statistical characteristic
 

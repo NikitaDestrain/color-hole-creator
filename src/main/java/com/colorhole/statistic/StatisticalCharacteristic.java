@@ -23,9 +23,7 @@ public class StatisticalCharacteristic {
             for (int column = 0; column < width; column++) {
                 int argb1 = image1.getRGB(column, row);
                 int argb2 = image2.getRGB(column, row);
-
                 int argbDiff = argb1 - argb2;
-
                 MSE += (double) argbDiff * argbDiff;
             }
         }

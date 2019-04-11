@@ -36,4 +36,8 @@ public class HoleCreatorUtils {
         }
         return coord;
     }
+
+    public int generateRandomSize(int min, int max) {
+        return min + random.nextInt(max);
+    }
 }

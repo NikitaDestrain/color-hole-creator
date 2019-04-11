@@ -1,4 +1,6 @@
-package com.colorhole;
+package com.colorhole.utils;
+
+import com.colorhole.other.OtherConstants;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,9 +23,9 @@ public class ImageRW {
     // todo catch block refactor
     public BufferedImage readImage(String imageName) {
         try {
-            File imageFile = new File(Constants.SOURCE_IMAGE_PATH + imageName);
+            File imageFile = new File(OtherConstants.SOURCE_IMAGE_PATH + imageName);
             BufferedImage image = ImageIO.read(imageFile);
-            System.out.println("[INFO]: Reading " + imageName + " complete");
+            System.out.println("[INFO]: Reading " + imageName + " completed");
             return image;
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,11 +34,13 @@ public class ImageRW {
     }
 
     // todo catch block refactor
-    public BufferedImage readImageByFullPath(String fullImagePath) {
+    public BufferedImage readImageByFullPath(String fullImagePath, boolean showInfo) {
         try {
             File imageFile = new File(fullImagePath);
             BufferedImage image = ImageIO.read(imageFile);
-            System.out.println("[INFO]: Reading " + fullImagePath + " complete");
+            if (showInfo) {
+                System.out.println("[INFO]: Reading " + fullImagePath + " completed");
+            }
             return image;
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,9 +51,9 @@ public class ImageRW {
     // todo catch block refactor
     public void writeImage(BufferedImage image, String imageName, String format) {
         try {
-            File imageFile = new File(Constants.TARGET_IMAGE_PATH + imageName);
+            File imageFile = new File(OtherConstants.TARGET_IMAGE_PATH + imageName);
             ImageIO.write(image, format, imageFile);
-            System.out.println("[INFO]: Writing " + imageName + " complete");
+            System.out.println("[INFO]: Writing " + imageName + " completed");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,26 +64,9 @@ public class ImageRW {
         try {
             File imageFile = new File(fullImagePath);
             ImageIO.write(image, format, imageFile);
-            System.out.println("[INFO]: Writing " + fullImagePath + " complete");
+            System.out.println("[INFO]: Writing " + fullImagePath + " completed");
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public List<String> getNameListForPath(String path, String fileName) {
-        List<String> imageNames = new ArrayList<>();
-        try {
-            FileInputStream fStream = new FileInputStream(path + fileName);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fStream));
-            String strLine;
-            while ((strLine = br.readLine()) != null) {
-                imageNames.add(strLine);
-            }
-            br.close();
-            fStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return imageNames;
     }
 }
