@@ -24,7 +24,7 @@ Go to **img/${your dataset name}** and create **descriptor** file and **flist** 
 
 Then you should go to **properties/** and choose **configuration.properties** file and paste to it needed parameters
 
-## Default configuration.properties
+#### Default configuration.properties
 
 ```
 ## run configuration
