@@ -3,6 +3,7 @@ package com.colorhole;
 import com.colorhole.hole.ColorConstants;
 import com.colorhole.hole.HoleCreator;
 import com.colorhole.hole.HoleCreatorUtils;
+import com.colorhole.statistic.StatisticContainer;
 import com.colorhole.utils.FileUtils;
 import com.colorhole.utils.ImageRW;
 import com.colorhole.utils.PropertyConstants;
@@ -15,7 +16,7 @@ import java.util.List;
 public class Runner {
 
     public static void main(String[] args) throws Exception {
-        PropertyParser runProperties = new PropertyParser("configuration.properties");
+        PropertyParser runProperties = new PropertyParser(PropertyConstants.PATH_TO_RUN_PROPERTY, "configuration.properties");
         FileUtils fu = FileUtils.getInstance();
         ImageRW iRW = ImageRW.getInstance();
         HoleCreator hC = HoleCreator.getInstance();
@@ -23,6 +24,8 @@ public class Runner {
 
         // process config file
         String subPath = runProperties.getProperty(PropertyConstants.PATH_PROPERTY);
+        String subInputPath = runProperties.getProperty(PropertyConstants.INPUT_SUB_PATH_PROPERTY);
+        String subOutputPath = runProperties.getProperty(PropertyConstants.OUTPUT_SUB_PATH_PROPERTY);
         int amount = Integer.parseInt(runProperties.getProperty(PropertyConstants.AMOUNT_PROPERTY));
         String outPostfix = runProperties.getProperty(PropertyConstants.OUTPUT_POSTFIX_PROPERTY);
         String form = runProperties.getProperty(PropertyConstants.FORM_PROPERTY);
@@ -31,6 +34,8 @@ public class Runner {
         int minWidth = Integer.parseInt(runProperties.getProperty(PropertyConstants.MIN_WIDTH_PROPERTY));
         int maxWidth = Integer.parseInt(runProperties.getProperty(PropertyConstants.MAX_WIDTH_PROPERTY));
         String color = runProperties.getProperty(PropertyConstants.COLOR_PROPERTY);
+
+        // process color
         int argbColor = ColorConstants.BLACK_COLOR_ARGB;
         switch (color) {
             case "red":
@@ -54,19 +59,39 @@ public class Runner {
                 break;
         }
 
-        // process descriptor
+        // process form
+        HoleCreator.HoleForm holeForm;
+        switch (form) {
+            case "rectangle":
+                holeForm = HoleCreator.HoleForm.RECTANGLE;
+                break;
+            case "ellipse":
+                holeForm = HoleCreator.HoleForm.ELLIPSE;
+                break;
+            default:
+                holeForm = HoleCreator.HoleForm.RECTANGLE;
+                break;
+        }
+
+        // process descriptor.properties
         String datasetPath = RunnerConstants.IMG_PATH_FILE_NAME + subPath + "/";
-        String extension = fu.readFileToString(datasetPath, RunnerConstants.DESCRIPTOR_FILE_NAME);
+        PropertyParser descriptorProperties = new PropertyParser(datasetPath, RunnerConstants.DESCRIPTOR_FILE_NAME);
+        String extension = descriptorProperties.getProperty(PropertyConstants.EXTENSION_PROPERTY);
+        String inputFlistFileName = descriptorProperties.getProperty(PropertyConstants.INPUT_FLIST_PROPERTY);
+        String outputFlistFileName = descriptorProperties.getProperty(PropertyConstants.OUTPUT_FLIST_PROPERTY);
+        String statisticOutPutFileName = descriptorProperties.getProperty(PropertyConstants.STATISTIC_PROPERTY);
+
         // process file names file
-        List<String> inputImageNames = fu.getNameListForPath(datasetPath, RunnerConstants.FLIST_FILE_NAME);
+        List<String> inputImageNames = fu.getNameListForPath(datasetPath + subInputPath + "/", inputFlistFileName);
         List<String> outputFileNames = new ArrayList<>();
+        List<StatisticContainer> statisticContainers = new ArrayList<>();
 
         // hole creation time
         System.out.println("[INFO]: Create holes for " + inputImageNames.size() + " images (" + amount + " per image)");
         for (String fileName : inputImageNames) {
             System.out.println();
             System.out.println("[INFO]: Image name: " + fileName);
-            String fullImagePath = datasetPath + fileName + "." + extension;
+            String fullImagePath = datasetPath + subInputPath + "/" + fileName + "." + extension;
             BufferedImage image = iRW.readImageByFullPath(fullImagePath, true);
             int width = image.getWidth();
             int height = image.getHeight();
@@ -79,21 +104,38 @@ public class Runner {
                 }
                 int holeHeight = hCU.generateRandomSize(minHeight, maxHeight);
                 int holeWidth = hCU.generateRandomSize(minWidth, maxWidth);
-                int startX = hCU.generateRandomCoordinate(width, width - holeWidth);
-                int startY = hCU.generateRandomCoordinate(height, height - holeHeight);
-                System.out.println("[INFO]: Hole №" + i + ":\n\t\tsize: " + width + "x" + height +
-                        "\n\t\tcoordinate: (" + startX + ", " + startY + ")");
-                hC.createColorHole(image, startX, startY, holeWidth, holeHeight, argbColor);
+                int startX = hCU.generateRandomCoordinate(width, holeWidth, width - holeWidth);
+                int startY = hCU.generateRandomCoordinate(height, holeHeight, height - holeHeight);
+                double holeArea = hCU.calculateFigureArea(holeHeight, holeWidth, holeForm);
+                System.out.println("[INFO]: Hole №" + i + ":\n\t\tsize: " + holeWidth + "x" + holeHeight +
+                        "\n\t\tcoordinate: (" + startX + ", " + startY + ")" +
+                        "\n\t\tarea: " + holeArea);
+                hC.createColorHole(image, startX, startY, holeWidth, holeHeight, argbColor, holeForm);
 
                 String outFileName = fileName + "_" + outPostfix + "_" + i;
-                String outImageFullPath = datasetPath + outFileName + "." + extension;
+                String outImageFullPath = datasetPath + subOutputPath + "/" + outFileName + "." + extension;
                 iRW.writeImageByFullPath(image, outImageFullPath, extension);
                 outputFileNames.add(outFileName);
+
+                // create statistic pojo
+                StatisticContainer sC = new StatisticContainer();
+                sC.setImageName(outFileName);
+                sC.setHoleHeight(holeHeight);
+                sC.setHoleWidth(holeWidth);
+                sC.setImageHeight(height);
+                sC.setImageWidth(width);
+                sC.setHoleForm(holeForm);
+                sC.setHoleArea(holeArea);
+                statisticContainers.add(sC);
             }
         }
 
         // write output flist
-        String outputFlistFullPath = datasetPath + RunnerConstants.FLIST_HOLE_FILE_NAME;
+        String outputFlistFullPath = datasetPath + subOutputPath + "/" + outputFlistFileName;
         fu.writeFlistByFullPath(outputFlistFullPath, outputFileNames);
+
+        // write output statistic
+        String outputStatisticFullPath = datasetPath + statisticOutPutFileName;
+        fu.writeStatisticByFullPath(outputStatisticFullPath, statisticContainers);
     }
 }

@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class PropertyParser {
-    private static String PATH_TO_PROPERTY = "properties/";
     private static Properties props;
 
-    public PropertyParser(String propertyName) throws IOException {
+    public PropertyParser(String path, String propertyName) throws IOException {
         this.props = new Properties();
-        FileInputStream fin = new FileInputStream(PATH_TO_PROPERTY + propertyName);
+        FileInputStream fin = new FileInputStream(path + propertyName);
         this.props.load(fin);
         fin.close();
     }

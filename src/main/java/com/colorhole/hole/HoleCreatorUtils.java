@@ -21,13 +21,13 @@ public class HoleCreatorUtils {
         return (a << 24) | (r << 16) | (g << 8) | b;
     }
 
-    public int generateRandomCoordinate(int max, int bound) {
+    public int generateRandomCoordinate(int max,int bound1, int bound2) {
         int coord = 0;
-        if (bound != -1) {
+        if (bound2 != -1) {
             boolean isValidY = false;
             while (!isValidY) {
                 coord = random.nextInt(max);
-                if (coord < bound) {
+                if (coord < bound2 && coord > bound1) {
                     isValidY = true;
                 }
             }
@@ -39,5 +39,16 @@ public class HoleCreatorUtils {
 
     public int generateRandomSize(int min, int max) {
         return min + random.nextInt(max);
+    }
+
+    public double calculateFigureArea(int height, int width, HoleCreator.HoleForm holeForm) {
+        switch (holeForm) {
+            case ELLIPSE:
+                return (height * width * 0.25) * Math.PI;
+            case RECTANGLE:
+                return height * width;
+            default:
+                return height * width;
+        }
     }
 }
