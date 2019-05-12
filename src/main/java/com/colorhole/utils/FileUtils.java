@@ -1,5 +1,6 @@
 package com.colorhole.utils;
 
+import com.colorhole.statistic.MseStatisticContainer;
 import com.colorhole.statistic.StatisticContainer;
 
 import java.io.*;
@@ -10,6 +11,7 @@ import java.util.Scanner;
 public class FileUtils {
 
     private static final String CSV_STATISTICS_HEADER = "imageName,imageHeight,imageWidth,holeHeight,holeWidth,holeForm,holeArea";
+    private static final String CSV_STATISTICS_MSE_HEADER = "originalImageName,imageHeight,imageWidth,amount,mse";
     private static final String COMMA_DELIMITER = ",";
     private static final String LINE_SEPARATOR = "\n";
 
@@ -76,6 +78,28 @@ public class FileUtils {
                 fileWriter.append(String.valueOf(statisticContainer.getHoleForm()));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(statisticContainer.getHoleArea()));
+                fileWriter.append(LINE_SEPARATOR);
+            }
+            System.out.println("[INFO]: Write to CSV file succeeded! See result: " + fullPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeMSEStatisticByFullPath(String fullPath, List<MseStatisticContainer> mseStatisticContainers) {
+        try (FileWriter fileWriter = new FileWriter(fullPath)) {
+            fileWriter.append(CSV_STATISTICS_MSE_HEADER);
+            fileWriter.append(LINE_SEPARATOR);
+            for (MseStatisticContainer statisticContainer : mseStatisticContainers) {
+                fileWriter.append(String.valueOf(statisticContainer.getOriginalImageName()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(statisticContainer.getImageHeight()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(statisticContainer.getImageWidth()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(statisticContainer.getAmount()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(statisticContainer.getMse()));
                 fileWriter.append(LINE_SEPARATOR);
             }
             System.out.println("[INFO]: Write to CSV file succeeded! See result: " + fullPath);

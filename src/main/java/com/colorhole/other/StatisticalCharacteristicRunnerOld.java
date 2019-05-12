@@ -1,4 +1,4 @@
-package com.colorhole;
+package com.colorhole.other;
 
 import com.colorhole.other.OtherConstants;
 import com.colorhole.statistic.StatisticalCharacteristic;
@@ -8,7 +8,8 @@ import com.colorhole.utils.ImageRW;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class StatisticalCharacteristicRunner {
+@Deprecated
+public class StatisticalCharacteristicRunnerOld {
     public static void main(String[] args) {
         ImageRW imageRW = ImageRW.getInstance();
         FileUtils fu = FileUtils.getInstance();

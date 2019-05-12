@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Data
 public class StatisticContainer {
-    public String imageName;
-    public int imageHeight;
-    public int imageWidth;
-    public int holeHeight;
-    public int holeWidth;
-    public HoleCreator.HoleForm holeForm;
-    public double holeArea;
+    private String imageName;
+    private int imageHeight;
+    private int imageWidth;
+    private int holeHeight;
+    private int holeWidth;
+    private HoleCreator.HoleForm holeForm;
+    private double holeArea;
 }
