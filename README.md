@@ -28,28 +28,31 @@ Then you should go to **properties/** and choose **configuration.properties** fi
 
 ```
 ## run configuration
-# path in img folder (should contain descriptor and flist. See: dataset_example)
+# path in img folder (should contain descriptor.properties and flist. See: dataset_example)
 path = dataset_example
-amount = 3
+amount = 8
 output_postfix = hole
+input_sub_path = input
+output_sub_path = output
+inpaint_sub_path = inpaint
 
 ## hole form
 # rectangle / ellipse
-form = rectangle
+form = ellipse
 
 ## hole sizes
 # min hole height
-min_height = 15
+min_height = 100
 # max hole height
-max_height = 50
+max_height = 200
 # min hole width
-min_width = 15
+min_width = 150
 # max hole width
-max_width = 50
+max_width = 200
 
 ## hole color
 # red / green / blue / white / black
-color = green
+color = red
 ```
 
 ### Statistical characteristic
