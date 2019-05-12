@@ -41,8 +41,11 @@ public class StaticalCharacteristicRunner {
             // get original name
             String originalName = inpaintFileName.split(("_" + postFix))[0];
 
-            String originalFullPath = datasetPath + subInputPath + "/" + originalName + "." + extension;
-            String inpaintFullPath = datasetPath + subInpaintPath + "/" + inpaintFileName + "." + extension;
+            String originalNameWithExt = originalName + "." + extension;
+            String inpaintNameWithExt = inpaintFileName + "." + extension;
+
+            String originalFullPath = datasetPath + subInputPath + "/" + originalNameWithExt;
+            String inpaintFullPath = datasetPath + subInpaintPath + "/" + inpaintNameWithExt;
 
             BufferedImage original = imageRW.readImageByFullPath(originalFullPath, false);
             BufferedImage inpaint = imageRW.readImageByFullPath(inpaintFullPath, false);
@@ -52,9 +55,9 @@ public class StaticalCharacteristicRunner {
             int imageWidth = original.getWidth();
 
             // logs
-            System.out.println("Original image: " + originalName);
-            System.out.println("Inpaint image: " + inpaintFileName);
-            System.out.println("MSE: " + mse);
+            System.out.println("[INFO]: Original image - " + originalNameWithExt);
+            System.out.println("[INFO]: Inpaint image - " + inpaintNameWithExt);
+            System.out.println("[RESULT]: MSE = " + mse);
             System.out.println();
 
             MseStatisticContainer mseStatisticContainer = new MseStatisticContainer();
