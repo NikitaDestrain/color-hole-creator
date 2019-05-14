@@ -6,6 +6,7 @@ public class PropertyConstants {
     public static final String PATH_PROPERTY = "path";
     public static final String AMOUNT_PROPERTY = "amount";
     public static final String OUTPUT_POSTFIX_PROPERTY = "output_postfix";
+    public static final String INPAINT_POSTFIX_PROPERTY = "inpaint_postfix";
     public static final String FORM_PROPERTY = "form";
     public static final String MIN_HEIGHT_PROPERTY = "min_height";
     public static final String MAX_HEIGHT_PROPERTY = "max_height";
@@ -24,4 +25,5 @@ public class PropertyConstants {
     public static final String MASKS_FLIST_PROPERTY = "flist_masks_file_name";
     public static final String STATISTIC_PROPERTY = "statistic_output_file_name";
     public static final String MSE_STATISTIC_PROPERTY = "mse_output_file_name";
+    public static final String STATISTICAL_CHARACTERISTIC_PROPERTY ="statical_characteristic_output_file_name";
 }
