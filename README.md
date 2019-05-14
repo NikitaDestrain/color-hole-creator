@@ -18,6 +18,24 @@ Program can produce image with color hole and calculate statistical characterist
 
 ![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/black-hole-example.jpg)
 
+#### Parameters:
+
+   - **Color:** 0xffff0000
+   - **Size:** random
+   - **Position:** random
+
+#### Input
+
+![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/example.jpg)
+
+#### Output
+
+![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/example_hole_3.jpg)
+
+#### Mask
+
+![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/example_hole_mask_3.jpg)
+
 ### Configuration
 
 Go to **img/${your dataset name}** and create **descriptor** file and **flist** file. See example: **img/dataset_example**.
@@ -32,9 +50,11 @@ Then you should go to **properties/** and choose **configuration.properties** fi
 path = dataset_example
 amount = 8
 output_postfix = hole
+inpaint_postfix = inp
 input_sub_path = input
 output_sub_path = output
 inpaint_sub_path = inpaint
+masks_sub_path = masks
 
 ## hole form
 # rectangle / ellipse
@@ -57,7 +77,7 @@ color = red
 
 ### Statistical characteristic
 
-At the moment, only calculation of MSE is available
+#### MSE
 
 ![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/mse.PNG)
 
@@ -65,6 +85,14 @@ At the moment, only calculation of MSE is available
 I - the first image 
 K - the second image
 ```
+
+#### Mean
+
+![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/mean.PNG)
+
+#### Unbiased sample variance
+
+![](https://github.com/NikitaDestrain/color-hole-creator/blob/master/readme-resources/var.PNG)
 
 Program result:
 
