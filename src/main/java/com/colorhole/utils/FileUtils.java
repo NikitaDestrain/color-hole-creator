@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class FileUtils {
 
-    private static final String CSV_STATISTICS_HEADER = "imageName,imageHeight,imageWidth,holeHeight,holeWidth,holeForm,holeArea";
+    private static final String CSV_STATISTICS_HEADER = "imageName,maskName,imageHeight,imageWidth,holeHeight,holeWidth,holeForm,holeArea";
     private static final String CSV_STATISTICS_MSE_HEADER = "originalImageName,imageHeight,imageWidth,amount,mse";
     private static final String COMMA_DELIMITER = ",";
     private static final String LINE_SEPARATOR = "\n";
@@ -66,6 +66,8 @@ public class FileUtils {
             fileWriter.append(LINE_SEPARATOR);
             for (StatisticContainer statisticContainer : statisticContainers) {
                 fileWriter.append(String.valueOf(statisticContainer.getImageName()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(statisticContainer.getMaskName()));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(statisticContainer.getImageHeight()));
                 fileWriter.append(COMMA_DELIMITER);

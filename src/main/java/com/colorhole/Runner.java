@@ -26,6 +26,7 @@ public class Runner {
         String subPath = runProperties.getProperty(PropertyConstants.PATH_PROPERTY);
         String subInputPath = runProperties.getProperty(PropertyConstants.INPUT_SUB_PATH_PROPERTY);
         String subOutputPath = runProperties.getProperty(PropertyConstants.OUTPUT_SUB_PATH_PROPERTY);
+        String subMasksPath = runProperties.getProperty(PropertyConstants.MASKS_SUB_PATH_PROPERTY);
         int amount = Integer.parseInt(runProperties.getProperty(PropertyConstants.AMOUNT_PROPERTY));
         String outPostfix = runProperties.getProperty(PropertyConstants.OUTPUT_POSTFIX_PROPERTY);
         String form = runProperties.getProperty(PropertyConstants.FORM_PROPERTY);
@@ -79,11 +80,13 @@ public class Runner {
         String extension = descriptorProperties.getProperty(PropertyConstants.EXTENSION_PROPERTY);
         String inputFlistFileName = descriptorProperties.getProperty(PropertyConstants.INPUT_FLIST_PROPERTY);
         String outputFlistFileName = descriptorProperties.getProperty(PropertyConstants.OUTPUT_FLIST_PROPERTY);
+        String masksFlistFileName = descriptorProperties.getProperty(PropertyConstants.MASKS_FLIST_PROPERTY);
         String statisticOutPutFileName = descriptorProperties.getProperty(PropertyConstants.STATISTIC_PROPERTY);
 
         // process file names file
         List<String> inputImageNames = fu.getNameListForPath(datasetPath + subInputPath + "/", inputFlistFileName);
         List<String> outputFileNames = new ArrayList<>();
+        List<String> maskFileNames = new ArrayList<>();
         List<StatisticContainer> statisticContainers = new ArrayList<>();
 
         // hole creation time
@@ -110,16 +113,32 @@ public class Runner {
                 System.out.println("[INFO]: Hole №" + i + ":\n\t\tsize: " + holeWidth + "x" + holeHeight +
                         "\n\t\tcoordinate: (" + startX + ", " + startY + ")" +
                         "\n\t\tarea: " + holeArea);
-                hC.createColorHole(image, startX, startY, holeWidth, holeHeight, argbColor, holeForm);
-
                 String outFileName = fileName + "_" + outPostfix + "_" + i;
+                String maskFileName = fileName + "_" + outPostfix + "_mask_" + i;
+
+                BufferedImage holeMask = hC.createColorHole(image,
+                        startX,
+                        startY,
+                        holeWidth,
+                        holeHeight,
+                        argbColor,
+                        holeForm,
+                        width,
+                        height
+                );
+
                 String outImageFullPath = datasetPath + subOutputPath + "/" + outFileName + "." + extension;
                 iRW.writeImageByFullPath(image, outImageFullPath, extension);
                 outputFileNames.add(outFileName);
 
+                String maskImageFullPath = datasetPath + subMasksPath + "/" + maskFileName + "." + extension;
+                iRW.writeImageByFullPath(holeMask, maskImageFullPath, extension);
+                maskFileNames.add(maskFileName);
+
                 // create statistic pojo
                 StatisticContainer sC = new StatisticContainer();
                 sC.setImageName(outFileName);
+                sC.setMaskName(maskFileName);
                 sC.setHoleHeight(holeHeight);
                 sC.setHoleWidth(holeWidth);
                 sC.setImageHeight(height);
@@ -133,6 +152,10 @@ public class Runner {
         // write output flist
         String outputFlistFullPath = datasetPath + subOutputPath + "/" + outputFlistFileName;
         fu.writeFlistByFullPath(outputFlistFullPath, outputFileNames);
+
+        // write mask flist
+        String masksFlistFullPath = datasetPath + subMasksPath + "/" + masksFlistFileName;
+        fu.writeFlistByFullPath(masksFlistFullPath, maskFileNames);
 
         // write output statistic
         String outputStatisticFullPath = datasetPath + statisticOutPutFileName;

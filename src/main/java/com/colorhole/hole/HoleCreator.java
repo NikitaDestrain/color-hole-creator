@@ -1,5 +1,6 @@
 package com.colorhole.hole;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class HoleCreator {
@@ -19,13 +20,19 @@ public class HoleCreator {
         return instance;
     }
 
-    public void createColorHole(BufferedImage image,
-                                int holeX,
-                                int holeY,
-                                int holeWidth,
-                                int holeHeight,
-                                int holeColor,
-                                HoleForm holeForm) {
+    public BufferedImage createColorHole(BufferedImage image,
+                                         int holeX,
+                                         int holeY,
+                                         int holeWidth,
+                                         int holeHeight,
+                                         int holeColor,
+                                         HoleForm holeForm,
+                                         int imageWidth,
+                                         int imageHeight) {
+
+        // create mask container
+        BufferedImage holeMask = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+
         switch (holeForm) {
             case RECTANGLE: {
                 int maxX = holeX + holeWidth;
@@ -33,6 +40,7 @@ public class HoleCreator {
                 for (int row = holeY; row < maxY; row++) {
                     for (int column = holeX; column < maxX; column++) {
                         image.setRGB(column, row, holeColor);
+                        holeMask.setRGB(column, row, ColorConstants.WHITE_COLOR_ARGB);
                     }
                 }
                 break;
@@ -49,7 +57,7 @@ public class HoleCreator {
                 int b_sqr = b * b;
                 int delta = 4 * b_sqr * ((deltaX + 1) * (deltaX + 1)) + a_sqr * ((2 * deltaY - 1) * (2 * deltaY - 1)) - 4 * a_sqr * b_sqr;
                 while (a_sqr * (2 * deltaY - 1) > 2 * b_sqr * (deltaX + 1)) {
-                    createEllipsePixels(image, holeX, holeY, deltaX, deltaY, holeColor);
+                    createEllipsePixels(image, holeMask, holeX, holeY, deltaX, deltaY, holeColor);
                     if (delta < 0) {
                         deltaX++;
                         delta += 4 * b_sqr * (2 * deltaX + 3);
@@ -61,7 +69,7 @@ public class HoleCreator {
                 }
                 delta = b_sqr * ((2 * deltaX + 1) * (2 * deltaX + 1)) + 4 * a_sqr * ((deltaY + 1) * (deltaY + 1)) - 4 * a_sqr * b_sqr;
                 while (deltaY + 1 != 0) {
-                    createEllipsePixels(image, holeX, holeY, deltaX, deltaY, holeColor);
+                    createEllipsePixels(image, holeMask, holeX, holeY, deltaX, deltaY, holeColor);
                     if (delta < 0) {
                         deltaY--;
                         delta += 4 * a_sqr * (2 * deltaY + 3);
@@ -80,9 +88,10 @@ public class HoleCreator {
         System.out.println("[INFO]: Hole (" + holeForm.toString() + ") " +
                 holeWidth + "x" + holeHeight +
                 " with color " + holeColor + " has been created");
+        return holeMask;
     }
 
-    private void createEllipsePixels(BufferedImage image, int x, int y, int deltaX, int deltaY, int color) {
+    private void createEllipsePixels(BufferedImage image, BufferedImage holeMask, int x, int y, int deltaX, int deltaY, int color) {
         int rightDownX = x + deltaX;
         int rightDownY = y + deltaY;
 
@@ -97,18 +106,22 @@ public class HoleCreator {
 
         for (int i = x; i < rightDownX; i++) {
             image.setRGB(i, rightDownY, color); // right down
+            holeMask.setRGB(i, rightDownY, ColorConstants.WHITE_COLOR_ARGB);
         }
 
         for (int i = x; i < rightUpX; i++) {
             image.setRGB(i, rightUpY, color); // right down
+            holeMask.setRGB(i, rightUpY, ColorConstants.WHITE_COLOR_ARGB);
         }
 
         for (int i = leftUpX; i < x; i++) {
             image.setRGB(i, leftUpY, color); // right down
+            holeMask.setRGB(i, leftUpY, ColorConstants.WHITE_COLOR_ARGB);
         }
 
         for (int i = leftDownX; i < x; i++) {
             image.setRGB(i, leftDownY, color); // right down
+            holeMask.setRGB(i, leftDownY, ColorConstants.WHITE_COLOR_ARGB);
         }
     }
 }

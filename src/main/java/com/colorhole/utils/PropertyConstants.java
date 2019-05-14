@@ -15,12 +15,13 @@ public class PropertyConstants {
     public static final String INPUT_SUB_PATH_PROPERTY = "input_sub_path";
     public static final String OUTPUT_SUB_PATH_PROPERTY = "output_sub_path";
     public static final String INPAINT_SUB_PATH_PROPERTY = "inpaint_sub_path";
+    public static final String MASKS_SUB_PATH_PROPERTY = "masks_sub_path";
 
     public static final String EXTENSION_PROPERTY = "extension";
     public static final String OUTPUT_FLIST_PROPERTY = "flist_output_file_name";
     public static final String INPUT_FLIST_PROPERTY = "flist_input_file_name";
     public static final String INPAINT_FLIST_PROPERTY = "flist_inpaint_file_name";
+    public static final String MASKS_FLIST_PROPERTY = "flist_masks_file_name";
     public static final String STATISTIC_PROPERTY = "statistic_output_file_name";
     public static final String MSE_STATISTIC_PROPERTY = "mse_output_file_name";
-
 }
