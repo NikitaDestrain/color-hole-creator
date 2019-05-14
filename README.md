@@ -69,8 +69,20 @@ K - the second image
 Program result:
 
 ```
-[INFO]: Reading img/source/example.jpg complete
-[INFO]: Reading img/target/black-hole-example.jpg complete
-[TEST]: Similar image MSE = 0.0
-[RESULT]: MSE = 9.10963298949942E11
+[INFO]: Original image - 0001_gth.png
+[INFO]: Inpaint image - 0001_out.png
+[RESULT]: MSE = 2.714814302671216E12
+
+...
+
+[INFO]: Original image - 1001_gth.png
+[INFO]: Inpaint image - 1001_out.png
+[RESULT]: MSE = 1.7302327627768616E12
+
+[INFO]: Original image - 1002_gth.png
+[INFO]: Inpaint image - 1002_out.png
+[RESULT]: MSE = 8.199025745305693E11
+
+[RESULT]: MSE mean = 1.9415632207691824E12
+[RESULT]: MSE unbiased sample variance = 2.0731934884411998E24
 ```
