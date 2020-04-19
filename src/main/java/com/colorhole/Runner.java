@@ -34,6 +34,8 @@ public class Runner {
         int maxHeight = Integer.parseInt(runProperties.getProperty(PropertyConstants.MAX_HEIGHT_PROPERTY));
         int minWidth = Integer.parseInt(runProperties.getProperty(PropertyConstants.MIN_WIDTH_PROPERTY));
         int maxWidth = Integer.parseInt(runProperties.getProperty(PropertyConstants.MAX_WIDTH_PROPERTY));
+        // todo probably we will use it for auto generating big data set
+        int holeSizeStep = Integer.parseInt(runProperties.getProperty(PropertyConstants.HOLE_SIZE_STEP_PROPERTY));
         String color = runProperties.getProperty(PropertyConstants.COLOR_PROPERTY);
 
         // process color
@@ -105,10 +107,16 @@ public class Runner {
                 if (i != 0) {
                     image = iRW.readImageByFullPath(fullImagePath, false);
                 }
-                int holeHeight = hCU.generateRandomSize(minHeight, maxHeight);
-                int holeWidth = hCU.generateRandomSize(minWidth, maxWidth);
-                int startX = hCU.generateRandomCoordinate(width, holeWidth, width - holeWidth);
-                int startY = hCU.generateRandomCoordinate(height, holeHeight, height - holeHeight);
+//                int holeHeight = hCU.generateRandomSize(minHeight, maxHeight);
+////                int holeWidth = hCU.generateRandomSize(minWidth, maxWidth);
+////                int startX = hCU.generateRandomCoordinate(width, holeWidth, width - holeWidth);
+////                int startY = hCU.generateRandomCoordinate(height, holeHeight, height - holeHeight);
+////                double holeArea = hCU.calculateFigureArea(holeHeight, holeWidth, holeForm);
+
+                int holeHeight = 100;
+                int holeWidth = 100;
+                int startX = 78;
+                int startY = 78;
                 double holeArea = hCU.calculateFigureArea(holeHeight, holeWidth, holeForm);
                 System.out.println("[INFO]: Hole №" + i + ":\n\t\tsize: " + holeWidth + "x" + holeHeight +
                         "\n\t\tcoordinate: (" + startX + ", " + startY + ")" +

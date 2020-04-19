@@ -17,6 +17,7 @@ public class PropertyConstants {
     public static final String OUTPUT_SUB_PATH_PROPERTY = "output_sub_path";
     public static final String INPAINT_SUB_PATH_PROPERTY = "inpaint_sub_path";
     public static final String MASKS_SUB_PATH_PROPERTY = "masks_sub_path";
+    public static final String HOLE_SIZE_STEP_PROPERTY = "hole_size_step";
 
     public static final String EXTENSION_PROPERTY = "extension";
     public static final String OUTPUT_FLIST_PROPERTY = "flist_output_file_name";
@@ -25,5 +26,6 @@ public class PropertyConstants {
     public static final String MASKS_FLIST_PROPERTY = "flist_masks_file_name";
     public static final String STATISTIC_PROPERTY = "statistic_output_file_name";
     public static final String MSE_STATISTIC_PROPERTY = "mse_output_file_name";
-    public static final String STATISTICAL_CHARACTERISTIC_PROPERTY ="statical_characteristic_output_file_name";
+    public static final String PSNR_STATISTIC_PROPERTY = "psnr_output_file_name";
+    public static final String STATISTICAL_CHARACTERISTIC_PROPERTY = "statical_characteristic_output_file_name";
 }

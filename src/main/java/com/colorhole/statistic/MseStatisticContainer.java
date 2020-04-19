@@ -9,4 +9,5 @@ public class MseStatisticContainer {
     private int imageWidth;
     private int amount;
     private double mse;
+    private double psnr;
 }

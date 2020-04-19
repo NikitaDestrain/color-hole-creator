@@ -32,6 +32,12 @@ public class HoleCreator {
 
         // create mask container
         BufferedImage holeMask = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+        // tmp WA
+        Graphics2D g = holeMask.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, holeMask.getWidth(), holeMask.getHeight());
+        // draw other things on g
+        g.dispose();
 
         switch (holeForm) {
             case RECTANGLE: {
@@ -40,7 +46,7 @@ public class HoleCreator {
                 for (int row = holeY; row < maxY; row++) {
                     for (int column = holeX; column < maxX; column++) {
                         image.setRGB(column, row, holeColor);
-                        holeMask.setRGB(column, row, ColorConstants.WHITE_COLOR_ARGB);
+                        holeMask.setRGB(column, row, ColorConstants.BLACK_COLOR_ARGB);
                     }
                 }
                 break;
@@ -106,22 +112,22 @@ public class HoleCreator {
 
         for (int i = x; i < rightDownX; i++) {
             image.setRGB(i, rightDownY, color); // right down
-            holeMask.setRGB(i, rightDownY, ColorConstants.WHITE_COLOR_ARGB);
+            holeMask.setRGB(i, rightDownY, ColorConstants.BLACK_COLOR_ARGB);
         }
 
         for (int i = x; i < rightUpX; i++) {
             image.setRGB(i, rightUpY, color); // right down
-            holeMask.setRGB(i, rightUpY, ColorConstants.WHITE_COLOR_ARGB);
+            holeMask.setRGB(i, rightUpY, ColorConstants.BLACK_COLOR_ARGB);
         }
 
         for (int i = leftUpX; i < x; i++) {
             image.setRGB(i, leftUpY, color); // right down
-            holeMask.setRGB(i, leftUpY, ColorConstants.WHITE_COLOR_ARGB);
+            holeMask.setRGB(i, leftUpY, ColorConstants.BLACK_COLOR_ARGB);
         }
 
         for (int i = leftDownX; i < x; i++) {
             image.setRGB(i, leftDownY, color); // right down
-            holeMask.setRGB(i, leftDownY, ColorConstants.WHITE_COLOR_ARGB);
+            holeMask.setRGB(i, leftDownY, ColorConstants.BLACK_COLOR_ARGB);
         }
     }
 }

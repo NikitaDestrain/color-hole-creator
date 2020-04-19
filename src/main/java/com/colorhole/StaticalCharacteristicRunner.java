@@ -28,24 +28,25 @@ public class StaticalCharacteristicRunner {
         String datasetPath = RunnerConstants.IMG_PATH_FILE_NAME + subPath + "/";
         PropertyParser descriptorProperties = new PropertyParser(datasetPath, RunnerConstants.DESCRIPTOR_FILE_NAME);
         String extension = descriptorProperties.getProperty(PropertyConstants.EXTENSION_PROPERTY);
-        //String inputFlistFileName = descriptorProperties.getProperty(PropertyConstants.INPUT_FLIST_PROPERTY);
+        String inputFlistFileName = descriptorProperties.getProperty(PropertyConstants.INPUT_FLIST_PROPERTY);
         String inpaintFlistFileName = descriptorProperties.getProperty(PropertyConstants.INPAINT_FLIST_PROPERTY);
         String mseStatisticFileName = descriptorProperties.getProperty(PropertyConstants.MSE_STATISTIC_PROPERTY);
+        String psnrStatisticFileName = descriptorProperties.getProperty(PropertyConstants.PSNR_STATISTIC_PROPERTY);
         String statisticCharacteristicFileName = descriptorProperties.getProperty(PropertyConstants.STATISTICAL_CHARACTERISTIC_PROPERTY);
         //String statisticOutPutFileName = descriptorProperties.getProperty(PropertyConstants.STATISTIC_PROPERTY);
 
-        //List<String> inputImageNames = fu.getNameListForPath(datasetPath + subInputPath + "/", inputFlistFileName);
+        List<String> inputImageNames = fu.getNameListForPath(datasetPath + subInputPath + "/", inputFlistFileName);
         List<String> inpaintImageNames = fu.getNameListForPath(datasetPath + subInpaintPath + "/", inpaintFlistFileName);
         List<MseStatisticContainer> mseStatisticContainers = new ArrayList<>();
         List<Double> mseList = new ArrayList<>();
+        List<Double> psnrList = new ArrayList<>();
 
         double mean = 0.0;
-        for (String inpaintFileName : inpaintImageNames) {
-            // get original name
-            String originalName = inpaintFileName.split(("_" + postFix))[0];
+        double psnrMean = 0.0;
+        for (String inputFileName : inputImageNames) {
 
-            String originalNameWithExt = originalName + "." + extension;
-            String inpaintNameWithExt = inpaintFileName + "." + extension;
+            String originalNameWithExt = inputFileName + "." + extension;
+            String inpaintNameWithExt = "result-" + inputFileName + "-" + inputFileName + "_hole_mask_0" + "." + "png"; // fixme change to name from flist
 
             String originalFullPath = datasetPath + subInputPath + "/" + originalNameWithExt;
             String inpaintFullPath = datasetPath + subInpaintPath + "/" + inpaintNameWithExt;
@@ -54,6 +55,7 @@ public class StaticalCharacteristicRunner {
             BufferedImage inpaint = imageRW.readImageByFullPath(inpaintFullPath, false);
 
             double mse = sc.calculateMSEForSimilarSizeImages(original, inpaint);
+            double psnr = sc.psnr(original, inpaint);
             int imageHeight = original.getHeight();
             int imageWidth = original.getWidth();
 
@@ -61,6 +63,7 @@ public class StaticalCharacteristicRunner {
             System.out.println("[INFO]: Original image - " + originalNameWithExt);
             System.out.println("[INFO]: Inpaint image - " + inpaintNameWithExt);
             System.out.println("[RESULT]: MSE = " + mse);
+            System.out.println("[RESULT]: PSNR = " + psnr);
             System.out.println();
 
             MseStatisticContainer mseStatisticContainer = new MseStatisticContainer();
@@ -68,11 +71,15 @@ public class StaticalCharacteristicRunner {
             mseStatisticContainer.setMse(mse);
             mseStatisticContainer.setImageHeight(imageHeight);
             mseStatisticContainer.setImageWidth(imageWidth);
-            mseStatisticContainer.setOriginalImageName(originalName);
+            mseStatisticContainer.setOriginalImageName(inputFileName);
+            mseStatisticContainer.setPsnr(psnr);
             mseStatisticContainers.add(mseStatisticContainer);
 
             mean += mse;
+            psnrMean += psnr;
+
             mseList.add(mse);
+            psnrList.add(psnr);
         }
         // calculate unbiased sample variance and mean
         mean /= mseList.size();
@@ -82,10 +89,21 @@ public class StaticalCharacteristicRunner {
         }
         variance /= (mseList.size() - 1);
 
+        psnrMean /= psnrList.size();
+        double psnrVariance = 0.0;
+        for (double psnr : psnrList) {
+            psnrVariance += ((psnr * psnr) - (psnrMean * psnrMean));
+        }
+        psnrVariance /= (psnrList.size() - 1);
+
         System.out.println("[RESULT]: MSE mean = " + mean);
         System.out.println("[RESULT]: MSE unbiased sample variance = " + variance);
         System.out.println();
+        System.out.println("[RESULT]: PSNR mean = " + psnrMean);
+        System.out.println("[RESULT]: PSNR unbiased sample variance = " + psnrVariance);
+        System.out.println();
         fu.writeMSEStatisticByFullPath(datasetPath + mseStatisticFileName, mseStatisticContainers);
-        fu.writeStatisticByFullPath(datasetPath + statisticCharacteristicFileName, mean, variance);
+        fu.writePSNRStatisticByFullPath(datasetPath + psnrStatisticFileName, mseStatisticContainers);
+        fu.writeStatisticByFullPath(datasetPath + statisticCharacteristicFileName, mean, variance, psnrMean, psnrVariance);
     }
 }
