@@ -114,3 +114,6 @@ Program result:
 [RESULT]: MSE mean = 1.9415632207691824E12
 [RESULT]: MSE unbiased sample variance = 2.0731934884411998E24
 ```
+### New features not presented in README.md
+* PSNR
+* Masks in black/white colors without main picture
