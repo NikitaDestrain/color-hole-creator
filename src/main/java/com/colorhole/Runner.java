@@ -107,16 +107,11 @@ public class Runner {
                 if (i != 0) {
                     image = iRW.readImageByFullPath(fullImagePath, false);
                 }
-//                int holeHeight = hCU.generateRandomSize(minHeight, maxHeight);
-////                int holeWidth = hCU.generateRandomSize(minWidth, maxWidth);
-////                int startX = hCU.generateRandomCoordinate(width, holeWidth, width - holeWidth);
-////                int startY = hCU.generateRandomCoordinate(height, holeHeight, height - holeHeight);
-////                double holeArea = hCU.calculateFigureArea(holeHeight, holeWidth, holeForm);
+                int holeHeight = hCU.generateRandomSize(minHeight, maxHeight);
+                int holeWidth = hCU.generateRandomSize(minWidth, maxWidth);
+                int startX = hCU.generateRandomCoordinate(width, holeWidth, width - holeWidth);
+                int startY = hCU.generateRandomCoordinate(height, holeHeight, height - holeHeight);
 
-                int holeHeight = 100;
-                int holeWidth = 100;
-                int startX = 78;
-                int startY = 78;
                 double holeArea = hCU.calculateFigureArea(holeHeight, holeWidth, holeForm);
                 System.out.println("[INFO]: Hole №" + i + ":\n\t\tsize: " + holeWidth + "x" + holeHeight +
                         "\n\t\tcoordinate: (" + startX + ", " + startY + ")" +
